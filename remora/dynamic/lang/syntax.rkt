@@ -11,6 +11,7 @@
 (provide Rλ
          remora
          fn
+         (rename-out [fn lambda])
          all
          alit
          array
