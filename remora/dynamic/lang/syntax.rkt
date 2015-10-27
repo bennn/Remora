@@ -11,7 +11,6 @@
 (provide Rλ
          remora
          fn
-         (rename-out [fn lambda])
          all
          alit
          array
@@ -97,11 +96,12 @@
 ;;; remora macros must explicitly recur on subterms that should be Remora code
 (define-syntax (remora stx)
   (syntax-parse stx
-    #:literals (fn alit array apply apply/shape box unbox vec require provide)
+    #:literals (fn alit array apply apply/shape box unbox vec require provide module+)
     ;; require and provide apparently need to be recognized specially, as
     ;; redefining them breaks lots of things
     [(_ (require subterms ...)) #'(require subterms ...)]
     [(_ (provide subterms ...)) #'(provide subterms ...)]
+    [(_ (module+ mname:id subterms ...)) #'(module+ mname:id (remora subterms) ...)]
     ;; a bare ATOM in EXP position is converted to a scalar containing that ATOM
     [(_ bare-atom:ATOM)
      (begin
